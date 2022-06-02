@@ -1,0 +1,202 @@
+#pragma GCC optimize("Ofast")
+#pragma GCC target("sse,sse2,sse3,ssse3,sse4,popcnt,abm,mmx,avx,avx2,fma")
+#pragma GCC optimize("unroll-loops")
+#include <bits/stdc++.h>
+#include <complex>
+#include <queue>
+#include <set>
+#include <unordered_set>
+#include <list>
+#include <chrono>
+#include <random>
+#include <iostream>
+#include <algorithm>
+#include <cmath>
+#include <string>
+#include <vector>
+#include <map>
+#include <unordered_map>
+#include <stack>
+#include <iomanip>
+#include <fstream>
+
+using namespace std;
+
+typedef long long ll;
+typedef long double ld;
+typedef pair<int, int> p32;
+typedef pair<ll, ll> p64;
+typedef pair<double, double> pdd;
+typedef vector<ll> v64;
+typedef vector<int> v32;
+typedef vector<vector<int>> vv32;
+typedef vector<vector<ll>> vv64;
+typedef vector<vector<p64>> vvp64;
+typedef vector<p64> vp64;
+typedef vector<p32> vp32;
+ll MOD = 998244353;
+double eps = 1e-12;
+#define forn(i, e) for (ll i = 0; i < e; i++)
+#define forsn(i, s, e) for (ll i = s; i < e; i++)
+#define rforn(i, s) for (ll i = s; i >= 0; i--)
+#define rforsn(i, s, e) for (ll i = s; i >= e; i--)
+#define ln "\n"
+#define dbg(x) cout << #x << " = " << x << ln
+#define mp make_pair
+#define pb push_back
+#define fi first
+#define se second
+#define INF 2e18
+#define fast_cin()                    \
+    ios_base::sync_with_stdio(false); \
+    cin.tie(NULL);                    \
+    cout.tie(NULL)
+#define all(x) (x).begin(), (x).end()
+#define sz(x) ((ll)(x).size())
+
+int M, N;
+vv32 inputMatrix()
+{
+    cin >> M >> N;
+    vv32 arr;
+    int val;
+
+    for (int i = 0; i < M; i++)
+    {
+        v32 tmp;
+        for (int j = 0; j < N; j++)
+        {
+            cin >> val;
+            tmp.push_back(val);
+        }
+        arr.push_back(tmp);
+    }
+
+    return arr;
+}
+
+void printMatrix(vv32 arr)
+{
+    int i, j;
+    for (i = 0; i < arr.size(); i++)
+    {
+        for (j = 0; j < arr[i].size(); j++)
+            cout << arr[i][j] << " ";
+        cout << endl;
+    }
+    cout << endl;
+}
+
+void spiralTraversal(vv32 arr)
+{
+    int row_start = 0, row_end = M - 1, col_start = 0, col_end = N - 1;
+
+    while (row_start <= row_end && col_start <= col_end)
+    {
+        for (int j = col_start; j <= col_end; j++)
+        {
+            cout << arr[row_start][j] << " ";
+        }
+        row_start++;
+        cout << endl;
+
+        for (int i = row_start; i <= row_end; i++)
+        {
+            cout << arr[i][col_end] << " ";
+        }
+        col_end--;
+        cout << endl;
+
+        for (int j = col_end; j >= col_start; j--)
+        {
+            cout << arr[row_end][j] << " ";
+        }
+        row_end--;
+        cout << endl;
+
+        for (int i = row_end; i >= row_start; i--)
+        {
+            cout << arr[i][col_start] << " ";
+        }
+        col_start++;
+        cout << endl;
+    }
+}
+
+vv32 transposeMatrix(vv32 arr)
+{
+    for (int i = 0; i < M; i++)
+    {
+        for (int j = i; j < N; j++)
+        {
+            int tmp = arr[i][j];
+            arr[i][j] = arr[j][i];
+            arr[j][i] = tmp;
+        }
+    }
+
+    return arr;
+}
+
+vv32 multipyMatrix(vv32 A, vv32 B)
+{
+    vv32 ans;
+
+    for (int i = 0; i < A.size(); i++)
+    {
+        v32 tmp;
+        for (int k = 0; k < B[i].size(); k++)
+        {
+            int sum = 0;
+            for (int j = 0; j < A[i].size(); j++)
+            {
+                sum += A[i][j] * B[j][k];
+            }
+            tmp.push_back(sum);
+        }
+        ans.push_back(tmp);
+    }
+    return ans;
+}
+
+bool searchInMatrix(vv32 arr, int k){
+    int r = 0, c = arr[0].size() - 1;
+    while (r < arr.size() && c >= 0)
+    {
+        if(arr[r][c] == k) return 1;
+        else if(arr[r][c] > k) c--;
+        else r++;
+    }
+    return 0;
+}
+
+void solve()
+{
+    vv32 A = inputMatrix();
+    // vv32 B = inputMatrix();
+    // printMatrix(A);
+    // printMatrix(B);
+    // spiralTraversal(arr);
+    // print(transposeMatrix(arr));
+    // printMatrix(multipyMatrix(A, B));
+    cout<<searchInMatrix(A, 8);
+}
+
+int main()
+{
+    fast_cin();
+#ifndef ONLINE_JUDGE
+    // For getting input from input.txt file
+    freopen("input.txt", "r", stdin);
+    // Printing the Output to output.txt file
+    freopen("output.txt", "w", stdout);
+#endif
+
+    ll t;
+    cin >> t;
+    for (int it = 1; it <= t; it++)
+    {
+        solve();
+    }
+    return 0;
+}
