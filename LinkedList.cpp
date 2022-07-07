@@ -76,6 +76,30 @@ void insertAtHead(node* &head, int val){
     head = n;
 }
 
+node* reverse(node* &head){
+    node* prev = NULL;
+    node* cur = head;
+    node* nxt;
+
+    while (cur != NULL)
+    {
+        nxt = cur->next;
+        cur->next = prev;
+        prev = cur;
+        cur = nxt;
+    }
+    return prev;
+}
+
+node* reverseRecursive(node* head){
+    if(head == NULL || head->next == NULL) return head;
+    node* newhead = reverseRecursive(head->next);
+    head->next->next = head;
+    head->next = NULL;
+
+    return newhead;
+}
+
 void display(node* head){
     node* tmp = head;
     while (tmp != NULL)
@@ -115,18 +139,46 @@ void deletion(node* &head, int val){
     delete todel;
 }
 
+node* reversek(node* &head, int k){
+    node* prev = NULL;
+    node* curr = head;
+    node* nxt;
+
+    int count = 0;
+    while (curr != NULL && count < k)
+    {
+        nxt = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = nxt;
+        count++;
+    }
+
+    if(nxt != NULL) head->next = reversek(nxt, k);
+    return prev;
+}
+
 void solve(){
     node* head = NULL;
     insertAtTail(head, 1);
     insertAtTail(head, 2);
     insertAtTail(head, 3);
-    display(head);
+    // display(head);
     insertAtHead(head, 4);
+    insertAtHead(head, 5);
+    insertAtHead(head, 6);
     display(head);
-    deletion(head, 2);
-    deleteAtHead(head);
-    display(head);
-    cout<<search(head, 2)<<ln;
+    // node* rev = reverseRecursive(head);
+    // display(rev);
+
+    int k = 2; node* newhead = reversek(head, k);
+    display(newhead);
+
+
+    // deletion(head, 2);
+    // deleteAtHead(head);
+    // display(head);
+    // cout<<search(head, 2)<<ln;
 }
 
 int main()
