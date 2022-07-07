@@ -158,6 +158,54 @@ node* reversek(node* &head, int k){
     return prev;
 }
 
+bool detectCycle(node* &head){
+    node* slow = head;
+    node* fast = head;
+
+    while (fast != NULL && fast->next != NULL)
+    {
+        slow = slow->next;
+        fast = fast->next->next;
+        if(fast == slow) return true;
+    }
+
+    return false;
+}
+
+void makeCycle(node* &head, int pos){
+    node* tmp = head;
+    node* startNode;
+
+    int count = 1;
+    while (tmp->next != NULL)
+    {
+        if(count == pos) startNode = tmp;
+        tmp = tmp->next;
+        count++;
+    }
+    tmp->next = startNode;
+}
+
+void removeCycle(node* &head){
+    node* slow = head;
+    node* fast = head;
+
+    do
+    {
+        slow = slow->next;
+        fast = fast->next->next;
+    } while (slow != fast);
+
+    fast = head;
+    while (slow->next != fast->next)
+    {
+        slow = slow->next;
+        fast = fast->next;
+    }
+    
+    slow->next = NULL;
+}
+
 void solve(){
     node* head = NULL;
     insertAtTail(head, 1);
@@ -167,12 +215,17 @@ void solve(){
     insertAtHead(head, 4);
     insertAtHead(head, 5);
     insertAtHead(head, 6);
+    cout<<detectCycle(head);
+    makeCycle(head, 3); cout<<ln;
+    cout<<detectCycle(head); cout<<ln;
+    removeCycle(head);
+    cout<<detectCycle(head); cout<<ln;
     display(head);
     // node* rev = reverseRecursive(head);
     // display(rev);
 
-    int k = 2; node* newhead = reversek(head, k);
-    display(newhead);
+    // int k = 2; node* newhead = reversek(head, k);
+    // display(newhead);
 
 
     // deletion(head, 2);
