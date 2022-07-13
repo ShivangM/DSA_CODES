@@ -97,17 +97,90 @@ void printStack(stack<int> &st, int size){
     forn(i, size){ cout<<st.top()<<" "; st.pop(); }
     cout<<endl;
 }
+
+int prefixEvaluation(string s){
+    stack<int> st;
+    rforn(i, s.length()-1) 
+    if(s[i] >= '0' && s[i] <= '9') st.push(s[i] - '0');
+    else {
+        int op1 = st.top(); st.pop();
+        int op2 = st.top(); st.pop();
+
+        switch (s[i])
+        {
+        case '+':
+            st.push(op1+op2);
+            break;
+        case '-':
+            st.push(op1-op2);
+            break;
+        case '*':
+            st.push(op1*op2);
+            break;
+        case '/':
+            st.push(op1/op2);
+            break;
+        case '^':
+            st.push(pow(op1,op2));
+            break;
+        
+        default:
+            break;
+        }
+    }
+
+    return st.top();
+}
+
+int postfixEvaluation(string s){
+    stack<int> st;
+    forn(i, s.length()) 
+    if(s[i] >= '0' && s[i] <= '9') st.push(s[i] - '0');
+    else {
+        int op2 = st.top(); st.pop();
+        int op1 = st.top(); st.pop();
+
+        switch (s[i])
+        {
+        case '+':
+            st.push(op1+op2);
+            break;
+        case '-':
+            st.push(op1-op2);
+            break;
+        case '*':
+            st.push(op1*op2);
+            break;
+        case '/':
+            st.push(op1/op2);
+            break;
+        case '^':
+            st.push(pow(op1,op2));
+            break;
+        
+        default:
+            break;
+        }
+    }
+
+    return st.top();
+}
  
+
+
 void solve(){
     // string s = "Hey how are you doing?";
     // reverseSentence(s);
 
-    stack<int> st;
-    forn(i, 4) st.push(i);
+    // stack<int> st; 
+    // forn(i, 4) st.push(i);
 
     // printStack(st, st.size());
-    reverseStack(st);
-    printStack(st, st.size());
+    // reverseStack(st);
+    // printStack(st, st.size());
+
+    cout<<prefixEvaluation("-+7*45+20")<<endl;
+    cout<<postfixEvaluation("46+2/5*7+")<<endl;
 }
 
 int main()
